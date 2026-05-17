@@ -1,0 +1,55 @@
+dataset:
+  name: longsciverify
+  subset: arxiv
+  root: externals/LongDocFACTScore
+
+runtime:
+  require_cuda: true
+  device: cuda
+
+claim_extraction:
+  mode: sentence
+  model: Babelscape/t5-base-summarization-claim-extractor
+  batch_size: 8
+  max_input_length: 512
+  max_new_tokens: 128
+  num_beams: 4
+  max_claims_per_sentence: 8
+  filter_with_nli: true
+  filter_threshold: 0.55
+  filter_nli_model: MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli
+  cache_path: data/cache/graph_metric/atomic_claims.json
+
+retrieval:
+  mode: dense
+  dense_weight: 0.75
+  normalize_claim_query: true
+  embedding_model: sentence-transformers/bert-base-nli-mean-tokens
+  top_k: 5
+  neighbor_window: 0
+
+scoring:
+  use_nli: true
+  nli_model: MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli
+  use_bartscore: true
+  bartscore_model: facebook/bart-large
+  bartscore_batch_size: 8
+  bartscore_center: -3.5
+  bartscore_scale: 0.7
+  sentence_aggregation: max
+  claim_aggregation: mean
+  summary_aggregation: sentence_mean
+  weights:
+    nli_support: 0.12
+    bartscore_support: 0.25
+    retrieval_score: 0.28
+    lexical_anchor_coverage: 0.16
+    evidence_precision: 0.04
+    numeric_match: 0.09
+    polarity_consistency: 0.04
+    section_relevance: 0.02
+    numeric_mismatch: -0.25
+    missing_anchor_penalty: -0.15
+
+outputs:
+  dir: data/outputs/graph_metric_arxiv/best_bert_k5_w0_graph_bart_wanli

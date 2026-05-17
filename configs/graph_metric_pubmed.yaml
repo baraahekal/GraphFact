@@ -1,0 +1,54 @@
+dataset:
+  root: externals/LongDocFACTScore
+
+runtime:
+  require_cuda: true
+  device: cuda
+
+claim_extraction:
+  mode: sentence
+  model: Babelscape/t5-base-summarization-claim-extractor
+  batch_size: 8
+  max_input_length: 512
+  max_new_tokens: 128
+  num_beams: 4
+  max_claims_per_sentence: 8
+  filter_with_nli: true
+  filter_threshold: 0.55
+  filter_nli_model: cross-encoder/nli-deberta-v3-large
+  cache_path: data/cache/graph_metric/atomic_claims.json
+
+retrieval:
+  mode: dense
+  dense_weight: 0.75
+  normalize_claim_query: true
+  embedding_model: sentence-transformers/all-mpnet-base-v2
+  top_k: 5
+  neighbor_window: 0
+
+scoring:
+  # Local GPU entailment feature. No API calls.
+  use_nli: true
+  nli_model: cross-encoder/nli-deberta-v3-large
+  use_bartscore: false
+  bartscore_model: facebook/bart-large
+  bartscore_batch_size: 8
+  bartscore_center: -3.5
+  bartscore_scale: 0.7
+  sentence_aggregation: max
+  claim_aggregation: mean
+  summary_aggregation: sentence_mean
+  weights:
+    nli_support: 0.20
+    bartscore_support: 0.0
+    retrieval_score: 0.35
+    lexical_anchor_coverage: 0.20
+    evidence_precision: 0.05
+    numeric_match: 0.10
+    polarity_consistency: 0.07
+    section_relevance: 0.03
+    numeric_mismatch: -0.25
+    missing_anchor_penalty: -0.18
+
+outputs:
+  dir: data/outputs/graph_metric_pubmed
