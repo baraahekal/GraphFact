@@ -7,7 +7,22 @@ venv/
 env/
 
 data/
-externals/
+
+externals/*
+!externals/LongDocFACTScore/
+!externals/LongDocFACTScore/data/
+!externals/LongDocFACTScore/data/**
+!externals/LongDocFACTScore/LICENSE
+!externals/LongDocFACTScore/NOTICE.txt
+!externals/LongDocFACTScore/README.md
+!externals/longeval-summarization/
+!externals/longeval-summarization/data/
+!externals/longeval-summarization/data/**
+!externals/longeval-summarization/LICENSE
+!externals/longeval-summarization/README.md
+externals/**/.git/
+externals/**/__pycache__/
+externals/**/.DS_Store
 graph_guided_factuality/
 
 *.log

@@ -1,0 +1,6 @@
+[submodule "externals/LongDocFACTScore"]
+	path = externals/LongDocFACTScore
+	url = https://github.com/jbshp/LongDocFACTScore
+[submodule "externals/longeval-summarization"]
+	path = externals/longeval-summarization
+	url = https://github.com/martiansideofthemoon/longeval-summarization.git

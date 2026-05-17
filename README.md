@@ -7,9 +7,15 @@ The metric does not use API calls, learned graph neural networks, or training lo
 ## Install
 
 ```bash
-git clone https://github.com/baraahekal/GraphFact.git
+git clone --recurse-submodules https://github.com/baraahekal/GraphFact.git
 cd GraphFact
 python -m pip install -r requirements.txt
+```
+
+If you cloned without submodules, fetch the benchmark data with:
+
+```bash
+git submodule update --init --recursive
 ```
 
 For GPU use, install the PyTorch build that matches your CUDA environment before installing the remaining requirements.
@@ -131,6 +137,14 @@ python -m graph_metric.score \
 ## Reproduce Benchmark Results
 
 Dataset adapters are included only for benchmark reproduction. Normal users only need `source_doc` and `summary`.
+
+This repository pins the public benchmark sources as git submodules for:
+
+- LongSciVerify PubMed and ArXiv
+- LongEval PubMed
+- LongEval SQuALITY alignment data
+
+They are available under `externals/LongDocFACTScore/data` and `externals/longeval-summarization/data` after running `git submodule update --init --recursive`. FENICE and ScreenEval require their own dataset preparation paths because they are not bundled in this release.
 
 The same metric config is used for every dataset:
 
